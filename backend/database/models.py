@@ -12,4 +12,4 @@ class Player(Base):
     birthdate = Column(String(50), nullable=True)
     position_id = Column(String(20), nullable=True)
     position = Column(String(20), nullable=False)
-    age = Column(Integer, nullable=False)
+    age = Column(String, nullable=False)

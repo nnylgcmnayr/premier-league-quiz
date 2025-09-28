@@ -50,7 +50,8 @@ async def get_all_players(db: Session = Depends(get_db)):
                 id=player.player_id,
                 firstname=player.firstname,
                 lastname=player.lastname,
-                team=player.team_name
+                team=player.team_name,
+                age=player.age
             )
             for player in players
         ]

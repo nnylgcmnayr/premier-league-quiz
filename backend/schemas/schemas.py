@@ -6,6 +6,7 @@ class PlayerResponse(BaseModel):
     firstname: str
     lastname: str
     team: str
+    age: str
 
 class RandomPlayerResponse(BaseModel):
     firstname: str

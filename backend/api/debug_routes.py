@@ -42,7 +42,7 @@ async def database_info(db: Session = Depends(get_db)):
         player_count = db.query(Player).count()
 
         # Get players
-        players = db.query(Player).limit(5).all()
+        players = db.query(Player).limit(100).all()
 
         return {
             "player_count": player_count,
@@ -52,6 +52,7 @@ async def database_info(db: Session = Depends(get_db)):
                     "firstname": p.firstname,
                     "team_name": p.team_name,
                     "position": p.position,
+                    "age": p.age
                 }
                 for p in players
             ]
