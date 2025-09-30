@@ -15,7 +15,10 @@ class DataLoader:
         self.trackable_stats = self.stat_setter()
         self.games_list = self.load_all_games_to_list()
         self.player_info = self.set_player_info()
+
+        # Used by API
         self.player_dict = self.load_all_players_to_dict()
+        self.teams_dict = self.load_all_teams_to_dict()
 
 
     # Make API calls for data
@@ -130,6 +133,11 @@ class DataLoader:
 
         return players_list
 
+    def load_all_teams_to_dict(self):
+        teams_dict = [{'team_id': i.team_id, 'team_name': i.team_name, 'table_position': i.table_position, 'total_points': i.total_points,
+                       'wins': i.wins, 'loses': i.loses, 'draws': i.wins} for i in self.team_list]
+        return teams_dict
+
     # Getters for instance variables
     def get_player_info(self):
         return self.player_info
@@ -148,5 +156,8 @@ class DataLoader:
 
     def get_games_list(self):
         return self.games_list
+
+    def get_teams_dict(self):
+        return self.teams_dict
 
 

@@ -12,3 +12,12 @@ class RandomPlayerResponse(BaseModel):
     firstname: str
     lastname: str
     team: str
+
+class TeamResponse(BaseModel):
+    id: int
+    name: str
+    points: int
+    table_position: str
+    wins: int
+    loses: int
+    draws: int

@@ -7,10 +7,10 @@ def etl_data():
     data_loader = DataLoader() # Initialize data loader
 
     # Get relevant instance variables from the data loader
-    player_info = data_loader.get_player_info()
     players_dict = data_loader.get_player_dict()
-    teams_list = data_loader.get_team_list()
+    teams_dict = data_loader.get_teams_dict()
+
     trackable_stats = data_loader.get_trackable_stats()
     games_list = data_loader.get_games_list()
 
-    return players_dict
+    return players_dict, teams_dict

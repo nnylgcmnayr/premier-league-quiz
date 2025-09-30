@@ -5,8 +5,8 @@ from typing import List
 import random
 
 from backend.database.database import get_db
-from backend.database.models import Player
-from backend.schemas.schemas import RandomPlayerResponse, PlayerResponse
+from backend.database.models import Player, Team
+from backend.schemas.schemas import RandomPlayerResponse, PlayerResponse, TeamResponse
 
 # API Routes
 
@@ -54,6 +54,41 @@ async def get_all_players(db: Session = Depends(get_db)):
                 age=player.age
             )
             for player in players
+        ]
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching players: {str(e)}")
+
+@router.get("/player/{player_id}", response_model=PlayerResponse)
+async def get_player_by_id(player_id: int, db: Session = Depends(get_db)):
+    """Get a player by id"""
+    player = db.query(Player).get({player_id})
+    if player:
+        return PlayerResponse(
+            id=player.player_id,
+            firstname=player.firstname,
+            lastname=player.lastname,
+            team=player.team_name,
+            age=player.age
+        )
+    else:
+        raise HTTPException(status_code=404, detail="Player not found")
+
+@router.get("/teams", response_model=List[TeamResponse])
+async def get_teams(db: Session = Depends(get_db)):
+    try:
+        teams = db.query(Team).all()
+        return [
+            TeamResponse(
+                id=team.team_id,
+                name=team.team_name,
+                points=team.total_points,
+                table_position=team.table_position,
+                wins=team.wins,
+                loses=team.loses,
+                draws=team.draws
+            )
+            for team in teams
         ]
 
     except Exception as e:
