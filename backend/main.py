@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from database.database import engine, SessionLocal
-from database.models import Base, Player, Team
-from api import get_routes, debug_routes
+from database.models import Base, Player, Team, Leaderboard
+from api import get_routes, debug_routes, post_routes
 import utils.etl_pipeline as etl
 
 @asynccontextmanager
@@ -13,6 +13,7 @@ async def lifespan(app: FastAPI):
 
     # Create tables
     try:
+        # Create all imported models
         Base.metadata.create_all(bind=engine)
         print("Database tables created successfully")
     except Exception as e:
@@ -68,7 +69,7 @@ app = FastAPI(
 
 # Include routers with prefixes
 app.include_router(get_routes.router, prefix="/api", tags=["GET Endpoints"])
-# app.include_router(post_routes.router, prefix="/api", tags=["POST Endpoints"])
+app.include_router(post_routes.router, prefix="/api", tags=["POST Endpoints"])
 app.include_router(debug_routes.router, prefix="/api/debug", tags=["Debug Endpoints"])
 
 if __name__ == "__main__":

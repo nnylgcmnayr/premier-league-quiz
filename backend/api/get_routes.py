@@ -5,8 +5,8 @@ from typing import List
 import random
 
 from backend.database.database import get_db
-from backend.database.models import Player, Team
-from backend.schemas.schemas import RandomPlayerResponse, PlayerResponse, TeamResponse
+from backend.database.models import Player, Team, Leaderboard
+from backend.schemas.schemas import LeaderboardEntry, RandomPlayerResponse, PlayerResponse, TeamResponse
 
 # API Routes
 
@@ -76,6 +76,7 @@ async def get_player_by_id(player_id: int, db: Session = Depends(get_db)):
 
 @router.get("/teams", response_model=List[TeamResponse])
 async def get_teams(db: Session = Depends(get_db)):
+    """Get all teams (for admin purposes)"""
     try:
         teams = db.query(Team).all()
         return [
@@ -93,3 +94,33 @@ async def get_teams(db: Session = Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching players: {str(e)}")
+
+
+@router.get("/leaderboard", response_model=List[LeaderboardEntry])
+async def get_leaderboard(limit: int = 10, db: Session = Depends(get_db)):
+    """Get the top scores from the leaderboard"""
+    try:
+        top_scores = (
+            db.query(Leaderboard)
+            .order_by(desc(Leaderboard.score), Leaderboard.timestamp)
+            .limit(limit)
+            .all()
+        )
+
+        leaderboard = []
+        for idx, entry in enumerate(top_scores, 1):
+            leaderboard.append(
+                LeaderboardEntry(
+                    id=entry.id,
+                    player_name=entry.player_name,
+                    score=entry.score,
+                    timestamp=entry.timestamp,
+                    rank=idx
+                )
+            )
+
+        return leaderboard
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching leaderboard: {str(e)}")
+

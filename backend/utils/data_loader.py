@@ -10,11 +10,14 @@ class DataLoader:
         self.bootstrap_request = self.process_bootstrap_static()
         self.fixtures_request = self.process_fixtures_static()
         self.team_info = self.set_team_info()
+        self.player_info = self.set_player_info()
+
+
         self.team_list = self.load_all_teams_to_list()
         self.position_key = self.position_setter()
         self.trackable_stats = self.stat_setter()
         self.games_list = self.load_all_games_to_list()
-        self.player_info = self.set_player_info()
+
 
         # Used by API
         self.player_dict = self.load_all_players_to_dict()
@@ -112,7 +115,6 @@ class DataLoader:
         player_info = self.bootstrap_request['elements']  # Access the value of the Elements key from the r dictionary.
 
         return player_info
-        # pprint(player_info[0])
 
     def load_all_players_to_dict(self):
 
@@ -135,7 +137,7 @@ class DataLoader:
 
     def load_all_teams_to_dict(self):
         teams_dict = [{'team_id': i.team_id, 'team_name': i.team_name, 'table_position': i.table_position, 'total_points': i.total_points,
-                       'wins': i.wins, 'loses': i.loses, 'draws': i.wins} for i in self.team_list]
+                       'wins': i.wins, 'loses': i.loses, 'draws': i.draws} for i in self.team_list]
         return teams_dict
 
     # Getters for instance variables

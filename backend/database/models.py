@@ -1,5 +1,15 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
+from datetime import datetime
 from .database import Base
+
+class Leaderboard(Base):
+    __tablename__ = "leaderboard"
+
+    id = Column(Integer, primary_key=True, index=True)
+    player_name = Column(String(50), nullable=False)
+    score = Column(Integer, nullable=False)
+    timestamp = Column(DateTime, default=datetime.utcnow)  # ← Fixed
+    game_duration = Column(Integer, nullable=True)
 
 class Player(Base):
     __tablename__ = "players"
