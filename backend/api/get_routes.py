@@ -34,7 +34,8 @@ async def get_random_player(db: Session = Depends(get_db)):
         return RandomPlayerResponse(
             firstname=random_player.firstname,
             lastname=random_player.lastname,
-            team=random_player.team_name
+            team_name=random_player.team_name,
+            team_id=random_player.team_id
         )
 
     except Exception as e:
@@ -94,6 +95,16 @@ async def get_teams(db: Session = Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching players: {str(e)}")
+
+@router.get("/get-teams")
+async def get_all_teams(db: Session = Depends(get_db)):
+    """Get all unique teams"""
+    try:
+        from backend.database.models import Team
+        teams = db.query(Team.team_id, Team.team_name).distinct().all()
+        return [{"team_id": t.team_id, "team_name": t.team_name} for t in teams]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/leaderboard", response_model=List[LeaderboardEntry])

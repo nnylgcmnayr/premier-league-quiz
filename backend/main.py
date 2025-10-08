@@ -1,10 +1,11 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from database.database import engine, SessionLocal
-from database.models import Base, Player, Team, Leaderboard
-from api import get_routes, debug_routes, post_routes
-import utils.etl_pipeline as etl
+from backend.database.database import engine, SessionLocal
+from backend.database.models import Base, Player, Team, Leaderboard
+from backend.api import get_routes, debug_routes, post_routes
+import backend.utils.etl_pipeline as etl
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -65,6 +66,15 @@ app = FastAPI(
     description="API for Premier League player quiz game",
     version="1.0.0",
     lifespan=lifespan
+)
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include routers with prefixes
