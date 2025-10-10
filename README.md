@@ -2,7 +2,7 @@
 
 A full-stack web application that tests users' knowledge of Premier League players through an interactive timed quiz game with real-time leaderboards.
 
-![Premier League Quiz](style_vibes.png)
+Play here: https://prem-league-quiz.netlify.app/
 
 ## 🎯 Features
 
