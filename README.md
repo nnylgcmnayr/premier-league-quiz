@@ -6,7 +6,7 @@ Play here: https://prem-league-quiz.netlify.app/
 
 ## 🎯 Features
 
-- **Timed Gameplay**: 60-second rounds testing player-to-team knowledge
+- **Timed Gameplay**: 45-second rounds testing player-to-team knowledge
 - **Dynamic Scoring**: +5 points for correct answers, -5 for incorrect
 - **Real-time Leaderboard**: Persistent top-10 rankings with live updates
 - **Responsive Design**: Mobile-first UI built with Tailwind CSS
