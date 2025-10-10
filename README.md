@@ -134,8 +134,10 @@ prem_league_web_app/
 ## 🏗️ Architecture Highlights
 
 ### ETL Pipeline
-- Extracts 5000+ player records from RapidAPI
-- Transforms data with Pandas
+- Extracts 5000+ player records from
+   - https://fantasy.premierleague.com/api/fixtures/
+   - https://fantasy.premierleague.com/api/bootstrap-static/
+- Transforms data using Python classes, dictionaries and Pandas
 - Loads into PostgreSQL using SQLAlchemy ORM
 
 ### Database Schema
@@ -182,6 +184,6 @@ This project is for educational/portfolio purposes. Player data sourced from pub
 
 ## 🙏 Acknowledgments
 
-- Premier League player data from RapidAPI
+- Premier League player data from public Fantasy Premier League API
 - Icons from Lucide React
 - Inspired by football quiz games
