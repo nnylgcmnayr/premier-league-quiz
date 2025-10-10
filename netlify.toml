@@ -1,0 +1,20 @@
+# Netlify configuration for React frontend deployment
+
+[build]
+  # Base directory for the frontend
+  base = "frontend/"
+
+  # Build command
+  command = "npm run build"
+
+  # Directory where build output is placed
+  publish = "build/"
+
+# Redirect all requests to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Environment variables (set these in Netlify dashboard)
+# REACT_APP_API_URL = your-railway-backend-url

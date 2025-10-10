@@ -26,6 +26,7 @@ const GameScreen = ({ onGameEnd }) => {
     if (teams.length > 0 && !currentPlayer) {
       loadRandomPlayer();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams]);
 
   // Timer countdown
@@ -91,23 +92,44 @@ const GameScreen = ({ onGameEnd }) => {
 
   if (loading || !currentPlayer) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center">
-        <div className="text-white text-2xl">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white text-2xl bg-black bg-opacity-50 px-8 py-4 rounded-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-500 to-blue-500 p-4">
+    <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-4 mb-6 flex justify-between items-center">
-          <div className="flex items-center">
-            <Clock className="text-red-500 w-6 h-6 mr-2" />
-            <span className="text-2xl font-bold text-red-500">{timeLeft}s</span>
+        <div className="bg-white rounded-lg shadow-lg p-4 md:p-6 mb-6 flex justify-between items-center">
+          <div
+            className={`flex items-center transition-colors duration-300 ${
+              timeLeft <= 10 ? 'animate-pulse' : ''
+            }`}
+            role="timer"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <Clock className={`w-6 h-6 md:w-8 md:h-8 mr-2 md:mr-3 ${
+              timeLeft <= 10 ? 'text-red-600' : timeLeft <= 30 ? 'text-orange-500' : 'text-blue-500'
+            }`} aria-hidden="true" />
+            <span
+              className={`text-2xl md:text-3xl font-bold ${
+                timeLeft <= 10 ? 'text-red-600' : timeLeft <= 30 ? 'text-orange-500' : 'text-gray-700'
+              }`}
+              aria-label={`${timeLeft} seconds remaining`}
+            >
+              {timeLeft}s
+            </span>
           </div>
-          <div className="text-2xl font-bold text-blue-600">
-            Score: {score}
+          <div className="text-right" role="status" aria-live="polite">
+            <div className="text-xs md:text-sm text-gray-500 uppercase tracking-wide mb-1">
+              Score
+            </div>
+            <div className="text-2xl md:text-3xl font-bold text-blue-600" aria-label={`Current score: ${score} points`}>
+              {score}
+            </div>
           </div>
         </div>
 

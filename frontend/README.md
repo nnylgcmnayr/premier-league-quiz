@@ -1,70 +1,131 @@
-# Getting Started with Create React App
+# Frontend - Premier League Quiz
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React-based frontend for the Premier League Quiz application featuring responsive design and real-time gameplay.
 
-## Available Scripts
+## 🛠️ Tech Stack
 
-In the project directory, you can run:
+- **React** - UI library with hooks
+- **Tailwind CSS** - Utility-first styling
+- **Lucide React** - Icon library
+- **Axios** - HTTP client
 
-### `npm start`
+## 📁 Component Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+src/
+├── components/
+│   ├── MenuScreen.jsx        # Landing page with leaderboard
+│   ├── GameScreen.jsx         # Main quiz gameplay
+│   ├── GameOverScreen.jsx     # End screen with score submission
+│   ├── PlayerCard.jsx         # Player display card
+│   ├── TeamSelector.jsx       # Team selection grid
+│   └── Leaderboard.jsx        # Top 10 rankings display
+├── services/
+│   └── api.js                # API client (Axios)
+├── utils/
+│   └── constants.js          # Game config and states
+├── App.jsx                   # Main app component
+└── index.js                  # Entry point
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Getting Started
 
-### `npm test`
+### Prerequisites
+- Node.js 18+
+- Backend API running (see `/backend/README.md`)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation
 
-### `npm run build`
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your backend URL
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Run development server**
+   ```bash
+   npm start
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   App will be available at `http://localhost:3000`
 
-### `npm run eject`
+### Build for Production
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run build
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Optimized production build will be in `build/` directory.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🎮 Game Flow
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Menu Screen** - View leaderboard and start game
+2. **Game Screen** - 60-second quiz with player-to-team matching
+3. **Game Over** - Submit score and view updated leaderboard
 
-## Learn More
+## 🎨 Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Responsive Design
+- Mobile-first approach
+- Breakpoints: `sm` (640px), `md` (768px), `lg` (1024px)
+- Adaptive grid layouts (2/3/4/5 columns)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Accessibility
+- ARIA labels on interactive elements
+- Live regions for screen readers
+- Keyboard navigation support
+- Focus states on all buttons
 
-### Code Splitting
+### Visual Enhancements
+- Color-coded timer (blue → orange → red)
+- Medal emojis for top 3 (🥇🥈🥉)
+- Smooth transitions and animations
+- Gradient backgrounds
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📦 Key Dependencies
 
-### Analyzing the Bundle Size
+```json
+{
+  "react": "^18.2.0",
+  "axios": "^1.5.0",
+  "lucide-react": "^0.263.1",
+  "tailwindcss": "^3.3.0"
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🚀 Deployment (Netlify)
 
-### Making a Progressive Web App
+### Automatic Deployment
+1. Push code to GitHub
+2. Connect repository to Netlify
+3. Netlify will use `netlify.toml` config
+4. Set environment variable: `REACT_APP_API_URL`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Manual Build
+```bash
+npm run build
+# Upload build/ folder to Netlify
+```
 
-### Advanced Configuration
+## 🔧 Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Environment Variables
+- `REACT_APP_API_URL` - Backend API endpoint
 
-### Deployment
+### Game Constants
+Located in `src/utils/constants.js`:
+- `GAME_DURATION`: 60 seconds
+- `CORRECT_POINTS`: +5
+- `INCORRECT_POINTS`: -5
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📝 Development Notes
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Uses React hooks (no class components)
+- Tailwind CSS for all styling
+- Axios interceptors for API error handling
+- State management via useState/useEffect

@@ -69,9 +69,11 @@ app = FastAPI(
 )
 
 # Configure CORS
+import os
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React dev server
+    allow_origins=allowed_origins,  # Will be set via environment variable in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
