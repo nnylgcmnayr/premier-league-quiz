@@ -13,7 +13,7 @@ const MenuScreen = ({ onStartGame, leaderboard }) => {
         </h1>
 
         <p className="text-sm sm:text-base text-gray-600 mb-6">
-          Match players to their teams. 10 seconds. +5 for correct, -5 for wrong!
+          Match players to their teams. 45 seconds. +5 for correct, -5 for wrong!
         </p>
 
         <button
