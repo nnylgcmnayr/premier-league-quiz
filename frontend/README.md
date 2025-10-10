@@ -119,7 +119,7 @@ npm run build
 
 ### Game Constants
 Located in `src/utils/constants.js`:
-- `GAME_DURATION`: 60 seconds
+- `GAME_DURATION`: 45 seconds
 - `CORRECT_POINTS`: +5
 - `INCORRECT_POINTS`: -5
 
