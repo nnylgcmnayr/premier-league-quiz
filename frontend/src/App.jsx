@@ -20,9 +20,10 @@ function App() {
   const loadLeaderboard = async () => {
     try {
       const data = await apiService.getLeaderboard();
-      setLeaderboard(data);
+      setLeaderboard(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error loading leaderboard:', error);
+      setLeaderboard([]);
     }
   };
 

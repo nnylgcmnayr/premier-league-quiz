@@ -10,7 +10,8 @@ const getMedalEmoji = (rank) => {
 };
 
 const Leaderboard = ({ leaderboard }) => {
-  if (!leaderboard || leaderboard.length === 0) {
+  // Ensure leaderboard is always an array
+  if (!leaderboard || !Array.isArray(leaderboard) || leaderboard.length === 0) {
     return (
       <div className="text-gray-500 italic py-4">
         No scores yet. Be the first to play!
