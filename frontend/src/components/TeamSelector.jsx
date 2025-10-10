@@ -1,13 +1,16 @@
 import React from 'react';
 
 const TeamSelector = ({ teams, onTeamSelect, disabled }) => {
+  // Ensure teams is always an array
+  const teamList = Array.isArray(teams) ? teams : [];
+
   return (
     <div
       className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4"
       role="group"
       aria-label="Select team"
     >
-      {teams.map((team) => (
+      {teamList.map((team) => (
         <button
           key={team.team_id || team}
           onClick={() => onTeamSelect(team.team_name || team)}

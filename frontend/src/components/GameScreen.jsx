@@ -44,9 +44,10 @@ const GameScreen = ({ onGameEnd }) => {
   const loadTeams = async () => {
     try {
       const data = await apiService.getTeams();
-      setTeams(data);
+      setTeams(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error loading teams:', error);
+      setTeams([]);
     }
   };
 
