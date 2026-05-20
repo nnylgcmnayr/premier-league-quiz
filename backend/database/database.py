@@ -2,6 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Get the backend directory path
 BACKEND_DIR = Path(__file__).parent.parent
