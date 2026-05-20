@@ -5,7 +5,6 @@ import GameScreen from './components/GameScreen';
 import GameOverScreen from './components/GameOverScreen';
 import { GAME_STATES } from './utils/constants';
 import { apiService } from './services/api';
-import backgroundImage from './hm.jpg';
 
 function App() {
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
@@ -44,12 +43,7 @@ function App() {
   };
 
   return (
-    <div
-      className="App"
-      style={{
-        backgroundImage: `url(${backgroundImage})`
-      }}
-    >
+    <div className="App">
       {gameState === GAME_STATES.MENU && (
         <MenuScreen
           onStartGame={startGame}

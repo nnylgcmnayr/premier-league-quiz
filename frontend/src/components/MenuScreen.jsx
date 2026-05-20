@@ -2,6 +2,13 @@ import React from 'react';
 import { Trophy, Play } from 'lucide-react';
 import Leaderboard from './Leaderboard';
 
+const CLUB_BADGES = [
+  { src: '/manutd.png',  name: 'Man Utd' },
+  { src: '/arsenal.png', name: 'Arsenal' },
+  { src: '/chelsea.png', name: 'Chelsea' },
+  { src: '/mancity.png', name: 'Man City' },
+];
+
 const MenuScreen = ({ onStartGame, leaderboard }) => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8">
@@ -12,8 +19,19 @@ const MenuScreen = ({ onStartGame, leaderboard }) => {
           Premier League Quiz
         </h1>
 
+        <div className="flex justify-center gap-6 my-4">
+          {CLUB_BADGES.map(({ src, name }) => (
+            <img
+              key={name}
+              src={src}
+              alt={name}
+              className="w-12 h-12 sm:w-16 sm:h-16 object-contain drop-shadow-md"
+            />
+          ))}
+        </div>
+
         <p className="text-sm sm:text-base text-gray-600 mb-6">
-          Match players to their teams. 45 seconds. +5 for correct, -5 for wrong!
+          Match players to their teams. 15 seconds. +5 for correct, -5 for wrong!
         </p>
 
         <button

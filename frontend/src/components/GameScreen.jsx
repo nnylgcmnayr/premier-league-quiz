@@ -80,7 +80,7 @@ const GameScreen = ({ onGameEnd }) => {
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback('');
       loadRandomPlayer();
-    }, 2000);
+    }, 800);
   };
 
   // Cleanup
