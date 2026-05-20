@@ -3,7 +3,7 @@
   "name": "Premier League Quiz",
   "icons": [
     {
-      "src": "manutd.png",
+      "src": "https://storage.googleapis.com/premier-league-quiz-assets/manutd.png",
       "type": "image/png",
       "sizes": "any"
     }

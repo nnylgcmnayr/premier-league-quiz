@@ -3,10 +3,10 @@ import { Trophy, Play } from 'lucide-react';
 import Leaderboard from './Leaderboard';
 
 const CLUB_BADGES = [
-  { src: '/manutd.png',  name: 'Man Utd' },
-  { src: '/arsenal.png', name: 'Arsenal' },
-  { src: '/chelsea.png', name: 'Chelsea' },
-  { src: '/mancity.png', name: 'Man City' },
+  { src: 'https://storage.googleapis.com/premier-league-quiz-assets/manutd.png',  name: 'Man Utd' },
+  { src: 'https://storage.googleapis.com/premier-league-quiz-assets/arsenal.png', name: 'Arsenal' },
+  { src: 'https://storage.googleapis.com/premier-league-quiz-assets/chelsea.png', name: 'Chelsea' },
+  { src: 'https://storage.googleapis.com/premier-league-quiz-assets/mancity.png', name: 'Man City' },
 ];
 
 const MenuScreen = ({ onStartGame, leaderboard }) => {
