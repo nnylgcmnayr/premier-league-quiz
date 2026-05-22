@@ -20,36 +20,37 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         print(f"Error creating database tables: {e}")
 
-    # Initialize database with data
+    # Sync database with latest FPL data on every startup.
+    # Previously this only ran when the DB was empty — now it runs every time
+    # so that player transfers, team changes, and can_select status stay current.
     db = SessionLocal()
     try:
-        # Check if players table exists and is empty
-        player_count = db.query(Player).count()
-        teams_count = db.query(Team).count()
-        players_dict = None
-        teams_dict = None
-        if player_count == 0 or teams_count == 0:
-            players_dict, teams_dict = etl.etl_data()
-        if player_count == 0:
-            print("Populating database with sample players...")
-            for player_data in players_dict:
-                player = Player(**player_data)
-                db.add(player)
-            db.commit()
-            print(f"Successfully added {len(players_dict)} players to database")
-        else:
-            print(f"Database already contains {player_count} player")
-        if teams_count == 0:
-            print("Populating database with sample teams...")
-            for team_data in teams_dict:
-                team = Team(**team_data)
-                db.add(team)
-            db.commit()
-            print(f"Successfully added {len(teams_dict)} teams to database")
-        else:
-            print(f"Database already contains {teams_count} teams")
+        print("Syncing database with FPL API...")
+        players_dict, teams_dict = etl.etl_data()
+
+        # db.merge() upserts: inserts if the primary key is new, updates if it already exists.
+        # Players with can_select=False are excluded upstream in the ETL pipeline.
+        for player_data in players_dict:
+            db.merge(Player(**player_data))
+
+        # Remove any players no longer present in the latest FPL data
+        # (e.g. departed players, or those newly marked can_select=False)
+        current_player_ids = {p['player_id'] for p in players_dict}
+        db.query(Player).filter(Player.player_id.notin_(current_player_ids)).delete(synchronize_session=False)
+        db.commit()
+        print(f"Synced {len(players_dict)} players")
+
+        for team_data in teams_dict:
+            db.merge(Team(**team_data))
+
+        # Remove any teams no longer present in the latest FPL data
+        current_team_ids = {t['team_id'] for t in teams_dict}
+        db.query(Team).filter(Team.team_id.notin_(current_team_ids)).delete(synchronize_session=False)
+        db.commit()
+        print(f"Synced {len(teams_dict)} teams")
+
     except Exception as e:
-        print(f"Error populating database: {e}")
+        print(f"Error syncing database: {e}")
         db.rollback()
     finally:
         db.close()
