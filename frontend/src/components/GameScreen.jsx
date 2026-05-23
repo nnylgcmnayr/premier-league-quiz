@@ -9,6 +9,9 @@ const GameScreen = ({ onGameEnd }) => {
   const [currentPlayer, setCurrentPlayer] = useState(null);
   const [teams, setTeams] = useState([]);
   const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
   const [timeLeft, setTimeLeft] = useState(GAME_CONFIG.GAME_DURATION);
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(true);
@@ -36,7 +39,7 @@ const GameScreen = ({ onGameEnd }) => {
         setTimeLeft(timeLeft - 1);
       }, 1000);
     } else {
-      onGameEnd(score);
+      onGameEnd(score, correctAnswers, wrongAnswers, totalQuestions);
     }
     return () => clearTimeout(timerRef.current);
   }, [timeLeft, score, onGameEnd]);
@@ -70,6 +73,12 @@ const GameScreen = ({ onGameEnd }) => {
     const points = isCorrect ? GAME_CONFIG.CORRECT_POINTS : GAME_CONFIG.INCORRECT_POINTS;
 
     setScore(prevScore => prevScore + points);
+    setTotalQuestions(prev => prev + 1);
+    if (isCorrect) {
+      setCorrectAnswers(prev => prev + 1);
+    } else {
+      setWrongAnswers(prev => prev + 1);
+    }
     setFeedback(
       isCorrect
         ? `✅ Correct! +${GAME_CONFIG.CORRECT_POINTS} points`

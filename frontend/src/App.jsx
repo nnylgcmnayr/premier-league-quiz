@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import MenuScreen from './components/MenuScreen';
 import GameScreen from './components/GameScreen';
@@ -9,6 +9,7 @@ import { apiService } from './services/api';
 function App() {
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
   const [score, setScore] = useState(0);
+  const [gameStats, setGameStats] = useState({ correctAnswers: 0, wrongAnswers: 0, totalQuestions: 0 });
   const [leaderboard, setLeaderboard] = useState([]);
 
   // Load leaderboard on mount
@@ -16,7 +17,7 @@ function App() {
     loadLeaderboard();
   }, []);
 
-  const loadLeaderboard = async () => {
+  const loadLeaderboard = useCallback(async () => {
     try {
       const data = await apiService.getLeaderboard();
       setLeaderboard(Array.isArray(data) ? data : []);
@@ -24,23 +25,25 @@ function App() {
       console.error('Error loading leaderboard:', error);
       setLeaderboard([]);
     }
-  };
+  }, []);
 
-  const startGame = () => {
+  const startGame = useCallback(() => {
     setScore(0);
+    setGameStats({ correctAnswers: 0, wrongAnswers: 0, totalQuestions: 0 });
     setGameState(GAME_STATES.PLAYING);
-  };
+  }, []);
 
-  const endGame = async (finalScore) => {
+  const endGame = useCallback(async (finalScore, correctAnswers, wrongAnswers, totalQuestions) => {
     setScore(finalScore);
-    await loadLeaderboard(); // Refresh leaderboard when game ends
+    setGameStats({ correctAnswers, wrongAnswers, totalQuestions });
+    await loadLeaderboard();
     setGameState(GAME_STATES.FINISHED);
-  };
+  }, [loadLeaderboard]);
 
-  const returnToMenu = async () => {
-    await loadLeaderboard(); // Refresh leaderboard
+  const returnToMenu = useCallback(async () => {
+    await loadLeaderboard();
     setGameState(GAME_STATES.MENU);
-  };
+  }, [loadLeaderboard]);
 
   return (
     <div className="App">
@@ -60,6 +63,7 @@ function App() {
       {gameState === GAME_STATES.FINISHED && (
         <GameOverScreen
           score={score}
+          gameStats={gameStats}
           leaderboard={leaderboard}
           onReturnToMenu={returnToMenu}
           onPlayAgain={startGame}

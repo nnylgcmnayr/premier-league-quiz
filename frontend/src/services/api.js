@@ -23,11 +23,14 @@ export const apiService = {
   },
 
   // Submit score
-  async submitScore(playerName, score, gameDuration = 60) {
+  async submitScore(playerName, score, gameDuration, correctAnswers, wrongAnswers, totalQuestions) {
     const response = await api.post('/api/scores', {
       player_name: playerName,
       score,
       game_duration: gameDuration,
+      correct_answers: correctAnswers,
+      wrong_answers: wrongAnswers,
+      total_questions: totalQuestions,
     });
     return response.data;
   },

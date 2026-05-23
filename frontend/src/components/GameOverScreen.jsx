@@ -1,29 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Trophy, RotateCcw, Home } from 'lucide-react';
 import { apiService } from '../services/api';
+import { GAME_CONFIG } from '../utils/constants';
 import Leaderboard from './Leaderboard';
 
-const GameOverScreen = ({ score, leaderboard, onReturnToMenu, onPlayAgain, onScoreSubmitted }) => {
+const GameOverScreen = ({ score, gameStats, leaderboard, onReturnToMenu, onPlayAgain, onScoreSubmitted }) => {
   const [playerName, setPlayerName] = useState('');
   const [showNameInput, setShowNameInput] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    console.log('GameOverScreen - leaderboard updated:', leaderboard);
-  }, [leaderboard]);
 
   const handleSubmitScore = async () => {
     if (!playerName.trim()) return;
 
     try {
       setSubmitting(true);
-      await apiService.submitScore(playerName, score);
-      // Reload leaderboard BEFORE hiding the input
+      const result = await apiService.submitScore(playerName, score, GAME_CONFIG.GAME_DURATION, gameStats.correctAnswers, gameStats.wrongAnswers, gameStats.totalQuestions);
       if (onScoreSubmitted) {
         await onScoreSubmitted();
       }
       setShowNameInput(false);
-      alert('Score submitted successfully!');
+      alert(`Score submitted!\n\nScore: ${result.score}\nCorrect: ${result.correct_answers}\nWrong: ${result.wrong_answers}\nTotal answered: ${result.total_questions}`);
     } catch (error) {
       console.error('Error submitting score:', error);
       alert('Failed to submit score. Please try again.');
@@ -66,7 +62,7 @@ const GameOverScreen = ({ score, leaderboard, onReturnToMenu, onPlayAgain, onSco
               className="w-full p-3 md:p-4 border-2 border-gray-300 rounded-lg mb-4 text-center text-lg
                 focus:border-blue-500 focus:ring-4 focus:ring-blue-200 focus:outline-none
                 transition-all duration-200 placeholder-gray-400"
-              onKeyPress={(e) => e.key === 'Enter' && handleSubmitScore()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmitScore()}
               disabled={submitting}
               autoFocus
             />

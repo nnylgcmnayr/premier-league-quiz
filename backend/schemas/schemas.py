@@ -28,6 +28,9 @@ class ScoreSubmission(BaseModel):
     player_name: str = Field(..., min_length=1, max_length=50)
     score: int
     game_duration: Optional[int] = None
+    correct_answers: Optional[int] = None
+    wrong_answers: Optional[int] = None
+    total_questions: Optional[int] = None
 
 class LeaderboardEntry(BaseModel):
     id: int
