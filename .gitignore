@@ -92,5 +92,3 @@ frontend/.env.production
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-*.yaml

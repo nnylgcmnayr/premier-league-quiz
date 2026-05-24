@@ -1,0 +1,81 @@
+# RESOURCE 1: PostgreSQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+        - name: POSTGRES_DB
+          value: "prem_league_quiz"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "postgres123"
+        ports:
+        - containerPort: 5432
+---
+# RESOURCE 2: PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+  type: ClusterIP
+---
+# RESOURCE 3: Backend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quiz-backend
+  template:
+    metadata:
+      labels:
+        app: quiz-backend
+    spec:
+      containers:
+      - name: quiz-backend
+        image: us-central1-docker.pkg.dev/premier-league-quiz-496917/quiz-repo/quiz-backend:v1
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://postgres:postgres123@postgres-service:5432/prem_league_quiz"
+        - name: ALLOWED_ORIGINS
+          value: "http://storage.googleapis.com,https://storage.googleapis.com"
+---
+# RESOURCE 4: Backend Service (Load Balancer)
+apiVersion: v1
+kind: Service
+metadata:
+  name: quiz-backend-service
+spec:
+  selector:
+    app: quiz-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer
