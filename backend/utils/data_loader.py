@@ -118,8 +118,11 @@ class DataLoader:
 
     def load_all_players_to_dict(self):
 
-        # Load players into list with required data points
-        players_list = [Players(i['id'], i['first_name'], i['second_name'], i['team'], i['birth_date'], i['element_type']) for i in self.player_info if i.get('can_select', True)]
+        # Filter to selectable players; fall back to all players during off-season when FPL sets can_select=False on everyone
+        selectable = [i for i in self.player_info if i.get('can_select', True)]
+        source = selectable if selectable else self.player_info
+
+        players_list = [Players(i['id'], i['first_name'], i['second_name'], i['team'], i['birth_date'], i['element_type']) for i in source]
 
         # Loop through players to set additional player object variables
         for player in players_list:
